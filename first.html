@@ -3,9 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Device Recommendation</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Device Recommendation</h1>
+        <div>
+            <form action="" style="display: flex; flex-direction: column; gap: 20px;">
+                <label for="device">Enter your budget: $</label>
+                <input type="text" name="device" placeholder="Enter your budget">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div>
+                        <label for="devices">Select your preferred device:</label>
+                        <input type="radio" name="devices" value="laptop">Laptop
+                        <input type="radio" name="devices" value="tablet">Tablet
+                        <input type="radio" name="devices" value="smartphone">SmartPhone
+                    </div>
+                    <div>
+                        <label for="devices">Select your preferred operating system:</label>
+                        <input type="radio" name="os" value="windows">Windows
+                        <input type="radio" name="os" value="macos">MacOS
+                        <input type="radio" name="os" value="linux">Linux
+                    </div>
+                    <div>
+                        <label for="need">Select your needs:</label>
+                        <input type="checkbox" name="need" value="coding">Coding
+                        <input type="checkbox" name="need" value="gaming">Gaming
+                        <input type="checkbox" name="need" value="video-editing">Video Editing
+                        <input type="checkbox" name="need" value="office-work">Office Work
+                    </div>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+
+            <span id="recommendation-result" style="margin-top: 20px; font-weight: bold;"></span>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const budget = parseInt(document.querySelector('input[name="device"]').value) || 0;
+            const deviceType = document.querySelector('input[name="devices"]:checked')?.value;
+            const os = document.querySelector('input[name="os"]:checked')?.value;
+            
+            const needsCheckboxes = document.querySelectorAll('input[name="need"]:checked');
+            const needs = Array.from(needsCheckboxes).map(cb => cb.value);
+
+            if (!deviceType || !os) {
+                alert("Please select a device type and operating system.");
+                return;
+            }
+
+            let recommendation = "";
+
+            if (deviceType === "laptop") {
+                if (os === "macos") {
+                    recommendation = budget > 1500 ? "MacBook Pro 16-inch (M3 Max)" : "MacBook Air (M2/M3)";
+                } else if (os === "windows") {
+                    if (needs.includes("gaming")) {
+                        recommendation = budget > 1200 ? "ASUS ROG Zephyrus G14" : "Acer Nitro 5";
+                    } else {
+                        recommendation = budget > 1000 ? "Dell XPS 15" : "Lenovo IdeaPad";
+                    }
+                } else if (os === "linux") {
+                    recommendation = "System76 Lemur Pro or Framework Laptop 13 (DIY Edition)";
+                }
+            } 
+            else if (deviceType === "tablet") {
+                if (os === "macos") recommendation = "iPad Pro (Note: Runs iPadOS, not macOS)";
+                else if (os === "windows") recommendation = "Microsoft Surface Pro 9";
+                else recommendation = "Lenovo Chromebook Duet or PineTab";
+            } 
+            else if (deviceType === "smartphone") {
+                if (os === "macos") recommendation = "iPhone 15 Pro (Note: Runs iOS, not macOS)";
+                else if (os === "linux") recommendation = "PinePhone Pro (Great for Linux enthusiasts!)";
+                else recommendation = budget > 800 ? "Samsung Galaxy S24 Ultra" : "Google Pixel 8a";
+            }
+
+            if (needs.includes("video-editing") && budget < 1000) {
+                recommendation += " (Note: Video editing may be slow at this budget!)";
+            }
+            if (needs.includes("Gaming") && os === "macos") {
+                recommendation += " (Note: Macbooks are not ideal for gaming!)";
+            }
+
+            let resultDiv = document.getElementById('recommendation-result');
+            if (!resultDiv) {
+                resultDiv = document.createElement('div');
+                resultDiv.id = 'recommendation-result';
+                resultDiv.style.marginTop = '20px';
+                resultDiv.style.padding = '15px';
+                resultDiv.style.backgroundColor = '#e0f7fa';
+                resultDiv.style.borderRadius = '8px';
+                resultDiv.style.fontWeight = 'bold';
+                document.querySelector('.container').appendChild(resultDiv);
+            }
+            
+            resultDiv.innerText = "Recommendation: " + recommendation;
+        });
+    </script>
 </body>
 </html>
