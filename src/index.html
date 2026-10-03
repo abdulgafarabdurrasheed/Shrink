@@ -106,19 +106,7 @@
                 recommendation += " (Note: Macbooks are not ideal for gaming!)";
             }
 
-            let resultDiv = document.getElementById('recommendation-result');
-            if (!resultDiv) {
-                resultDiv = document.createElement('div');
-                resultDiv.id = 'recommendation-result';
-                resultDiv.style.marginTop = '20px';
-                resultDiv.style.padding = '15px';
-                resultDiv.style.backgroundColor = '#e0f7fa';
-                resultDiv.style.borderRadius = '8px';
-                resultDiv.style.fontWeight = 'bold';
-                document.querySelector('.container').appendChild(resultDiv);
-            }
-            
-            resultDiv.innerText = "Recommendation: " + recommendation;
+            document.getElementById('recommendation-result').innerText = "Recommendation: " + recommendation;
         });
     </script>
 </body>
